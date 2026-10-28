@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RevQuest — game web tương tác dạy reverse engineering từ con số 0: terminal, strings, listing, Ghidra-like UI, 9 level đa đường giải, 24 badge. 100% vanilla JS.">
+  <meta name="theme-color" content="#1e1e1e">
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="RevQuest — Học reverse engineering từ con số 0">
+  <meta property="og:description" content="9 level đa đường giải, terminal giả lập như Linux thật, workbench Ghidra-like (listing · decompiler · xrefs · graph · hex patch · script console), 24 badge theo kỹ năng.">
+  <meta property="og:site_name" content="RevQuest">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="RevQuest — Học reverse engineering từ con số 0">
+  <meta name="twitter:description" content="9 level đa đường giải, terminal giả lập như Linux thật, workbench Ghidra-like, 24 badge theo kỹ năng.">
+  <title>RevQuest — Học reverse engineering từ con số 0</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e1e1e'/%3E%3Crect x='7' y='7' width='18' height='18' rx='3' fill='none' stroke='%234ec9b0' stroke-width='2'/%3E%3Ccircle cx='13' cy='13' r='3' fill='%234ec9b0'/%3E%3Cpath d='M15 15l6 6' stroke='%234ec9b0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e1e1e'/%3E%3Crect x='7' y='7' width='18' height='18' rx='3' fill='none' stroke='%234ec9b0' stroke-width='2'/%3E%3Ccircle cx='13' cy='13' r='3' fill='%234ec9b0'/%3E%3Cpath d='M15 15l6 6' stroke='%234ec9b0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/terminal.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon">🔍</span> RevQuest</div>
+    <nav id="level-nav" class="level-nav" aria-label="Chọn level"></nav>
+    <div class="topbar-right">
+      <div id="progress" class="progress"></div>
+      <button id="badges-btn" class="btn btn-ghost btn-sm" title="Xem badge">🏅</button>
+      <button id="reset-btn" class="btn btn-ghost btn-sm" title="Xoá toàn bộ tiến độ">↺ Reset</button>
+    </div>
+  </header>
+
+  <main id="app" class="app">
+    <div id="level-header" class="level-header"></div>
+    <div id="tabs" class="tabs" role="tablist"></div>
+    <div id="panels" class="panels">
+      <section id="panel-theory"    class="panel" role="tabpanel"></section>
+      <section id="panel-demo"      class="panel" role="tabpanel"></section>
+      <section id="panel-challenge" class="panel" role="tabpanel"></section>
+      <section id="panel-solution"  class="panel" role="tabpanel"></section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    RevQuest — học reverse engineering bằng quy trình tìm kiếm, không phải học tool. Tiến độ + badge lưu trong localStorage.
+  </footer>
+
+  <div id="toasts" class="toasts"></div>
+
+  <div id="badges-modal" class="modal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h2>🏅 Badges</h2>
+        <div class="badges-progress"></div>
+        <button class="btn btn-sm modal-close">✕</button>
+      </div>
+      <div class="badges-list"></div>
+    </div>
+  </div>
+
+  <script src="js/engine.js"></script>
+  <script src="js/vfs.js"></script>
+  <script src="js/shell/parser.js"></script>
+  <script src="js/shell/pager.js"></script>
+  <script src="js/shell/gdb.js"></script>
+  <script src="js/shell/commands.js"></script>
+  <script src="js/shell/terminal.js"></script>
+  <script src="js/ghidra/listing.js"></script>
+  <script src="js/ghidra/strings.js"></script>
+  <script src="js/ghidra/decompiler.js"></script>
+  <script src="js/ghidra/symbols.js"></script>
+  <script src="js/ghidra/xrefs.js"></script>
+  <script src="js/ghidra/graph.js"></script>
+  <script src="js/ghidra/hex.js"></script>
+  <script src="js/ghidra/script.js"></script>
+  <script src="js/ghidra/panels.js"></script>
+  <script src="js/badges/definitions.js"></script>
+  <script src="js/badges/engine.js"></script>
+  <script src="js/binaries/level1.js"></script>
+  <script src="js/binaries/level3.js"></script>
+  <script src="js/binaries/level4.js"></script>
+  <script src="js/binaries/level5.js"></script>
+  <script src="js/binaries/level6.js"></script>
+  <script src="js/binaries/level7.js"></script>
+  <script src="js/binaries/level8.js"></script>
+  <script src="js/levels/engine.js"></script>
+  <script src="js/levels/level0.js"></script>
+  <script src="js/levels/level1.js"></script>
+  <script src="js/levels/level2.js"></script>
+  <script src="js/levels/level3.js"></script>
+  <script src="js/levels/level4.js"></script>
+  <script src="js/levels/level5.js"></script>
+  <script src="js/levels/level6.js"></script>
+  <script src="js/levels/level7.js"></script>
+  <script src="js/levels/level8.js"></script>
+  <script src="js/levels/index.js"></script>
+</body>
+</html>
